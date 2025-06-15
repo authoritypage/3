@@ -1,177 +1,576 @@
 /*
-    Psychopolitics of Dominance | script.js
-    Enhances the reading experience with dynamic Table of Contents,
-    scroll progress indication, and active section highlighting.
+    Psychopolitics of Dominance | style.css
+    Designed for maximum readability, intellectual clarity, and effortless navigation
+    of academic long-form content. Prioritizing dark theme for reduced eye strain.
 */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Element Cache ---
-    const paperContent = document.querySelector('.paper-content');
-    const tocNav = document.getElementById('toc-nav');
-    const sections = document.querySelectorAll('.section-chapter'); // Main paper sections
-    const readingProgressBar = document.getElementById('reading-progress-bar');
-    const siteHeader = document.querySelector('.site-header');
+/* --- CSS Variables for Global Styling & Theme --- */
+:root {
+    /* Color Palette (Dark Theme optimized for text-heavy content) */
+    --color-background: #1A1A1A;     /* Deep charcoal background */
+    --color-text-primary: #EAEAEA;   /* Soft white for main text */
+    --color-text-secondary: #AAAAAA; /* Lighter gray for secondary text, author info */
+    --color-accent: #6DB3BC;         /* Sophisticated blue-green for highlights and links (intellectual/scientific feel) */
+    --color-border: #333333;         /* Subtle separator lines */
+    --color-code-bg: #222222;        /* For inline code or blockquotes background */
+    --color-quote-border: #444444;   /* Quote border color */
 
-    // --- State Variables ---
-    let observer; // Intersection Observer for active TOC links
+    /* Typography */
+    --font-body: 'Merriweather', serif; /* Classic, highly readable serif for long text */
+    --font-heading: 'Lato', sans-serif; /* Clean, modern sans-serif for headings */
+    --font-size-base: 1.15rem; /* Larger base font for comfort */
+    --font-size-sm: 0.95rem;   /* Smaller text (keywords, footer) */
+    --font-size-md: 1.1rem;
+    --font-size-lg: 1.5rem;
+    --font-size-xl: 2rem;      /* H2-level headings */
+    --font-size-xxl: 3rem;     /* Paper Title */
 
-    // --- Initialization ---
-    generateTableOfContents();
-    setupEventListeners();
-    setupIntersectionObserver(); // For scroll spy
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2.5rem;
+    --spacing-xl: 4rem;
+    --spacing-xxl: 6rem; /* Section padding */
 
-    // --- Functions ---
+    /* Layout Max-Width for Readability */
+    --max-text-width: 750px; /* Optimal reading width (approx 65-85 characters per line) */
 
-    /**
-     * Dynamically generates the Table of Contents from h2 and h3 headings in the paper content.
-     */
-    function generateTableOfContents() {
-        const tocList = document.createElement('ul');
-        let currentLevel1Item = null;
+    /* Transitions & Animations */
+    --transition-duration: 0.3s;
+    --transition-ease: ease-in-out;
+}
 
-        sections.forEach((section, index) => {
-            const h2 = section.querySelector('h2');
-            if (h2) {
-                // Ensure the section has an ID for direct linking
-                if (!section.id) {
-                    section.id = `section-${h2.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                }
+/* --- Base Styles & Resets --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-                // Create L1 TOC item (Chapter H2)
-                currentLevel1Item = document.createElement('li');
-                const h2Link = document.createElement('a');
-                h2Link.href = `#${section.id}`;
-                // Use data-level if present, otherwise just the text content for the TOC link
-                h2Link.textContent = `${h2.getAttribute('data-level') ? h2.getAttribute('data-level') + '. ' : ''}${h2.textContent.replace(/^I?\w+\.\s+/, '')}`; // Removes "I. " or "II. " from TOC link
-                currentLevel1Item.appendChild(h2Link);
-                tocList.appendChild(currentLevel1Item);
+html {
+    scroll-behavior: smooth;
+}
 
-                // Check for H3s within this section to create L2 TOC items
-                const h3s = section.querySelectorAll('h3');
-                if (h3s.length > 0) {
-                    const subList = document.createElement('ul');
-                    h3s.forEach(h3 => {
-                        // Ensure the h3 has an ID
-                        if (!h3.id) {
-                            // Basic ID generation for H3s
-                            let h3Text = h3.textContent.split(' - ')[0]; // Take only the number part (A, B, C or 1, 2, 3)
-                            let h2DataLevel = h2.getAttribute('data-level') ? h2.getAttribute('data-level').toLowerCase().replace('.', '') : `chapter-${index + 1}`; // Ensure consistent base ID for h3
-                            h3.id = `${h2DataLevel}-${h3Text.toLowerCase().replace(/[^a-z0-9]+/g, '')}`;
-                        }
+body {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: 1.7; /* Increased for better readability of long text */
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased; /* macOS font smoothing */
+    -moz-osx-font-smoothing: grayscale; /* macOS font smoothing */
+}
 
-                        const subListItem = document.createElement('li');
-                        const h3Link = document.createElement('a');
-                        h3Link.href = `#${h3.id}`;
-                        // For H3, capture just "A. Dopamine Hijacking" part, remove chapter number if present
-                        let displayH3Text = h3.textContent.trim();
-                        const match = displayH3Text.match(/^(?:[A-Z]\.|\d+\.)\s+(.*)/);
-                        if (match && match[1]) {
-                            displayH3Text = match[1]; // Get "Dopamine Hijacking"
-                        }
-                        h3Link.textContent = displayH3Text;
-                        subListItem.appendChild(h3Link);
-                        subList.appendChild(subListItem);
-                    });
-                    if (currentLevel1Item) {
-                        currentLevel1Item.appendChild(subList);
-                    }
-                }
-            }
-        });
-        tocNav.appendChild(tocList);
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition-duration), background-color var(--transition-duration);
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+    color: var(--color-text-primary); /* Less intense accent on hover for reading */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+
+strong {
+    font-weight: 700;
+    color: var(--color-accent); /* Highlight important terms */
+}
+
+ul, ol {
+    margin-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+
+li {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* --- Utility Classes --- */
+.container {
+    max-width: 1400px; /* Overall max width, text inside has its own */
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background-color: var(--color-accent);
+    color: white;
+    padding: var(--spacing-sm);
+    z-index: 1000;
+    font-size: var(--font-size-sm);
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* --- Header --- */
+.site-header {
+    background-color: var(--color-background); /* Matches body background */
+    padding: var(--spacing-lg) 0 var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    transition: padding var(--transition-duration), background-color var(--transition-duration), box-shadow var(--transition-duration);
+}
+
+.site-header.scrolled {
+    padding: var(--spacing-sm) 0;
+    background-color: color-mix(in srgb, var(--color-background) 90%, black); /* Slightly darker on scroll */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.header-content {
+    text-align: center;
+    max-width: var(--max-text-width); /* Center the header text content */
+}
+
+.header-tagline {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-md);
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-xs);
+}
+
+.paper-title {
+    font-size: var(--font-size-xxl);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+.author-info {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.author-info p {
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.4;
+}
+
+.keywords {
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-sm);
+    line-height: 1.5;
+    color: var(--color-accent);
+    font-weight: 400;
+}
+.keywords strong {
+    color: var(--color-text-secondary);
+}
+
+
+/* Reading Progress Bar */
+.reading-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%; /* Filled by JS */
+    height: 4px;
+    background-color: var(--color-accent);
+    z-index: 100; /* Above header itself */
+    transition: width 0.1s linear;
+}
+
+
+/* --- Main Content Layout (Grid) --- */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr var(--max-text-width) 1fr; /* Flexible sidebars, fixed content width */
+    gap: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    padding-bottom: var(--spacing-xl);
+}
+
+.paper-content {
+    grid-column: 2; /* Main content in the middle column */
+    max-width: var(--max-text-width); /* Explicitly set content width */
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    margin: 0 auto; /* Ensures centering if grid fails or on very wide screens */
+}
+
+.section-chapter {
+    margin-bottom: var(--spacing-xxl); /* Spacing between main sections */
+}
+
+.section-chapter:last-child {
+    margin-bottom: 0;
+}
+
+.section-chapter h2,
+.section-chapter h3 {
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    scroll-margin-top: calc(100px + var(--spacing-md)); /* Adjust for sticky header when linking */
+}
+
+.section-chapter h2 {
+    font-size: var(--font-size-xl);
+    position: relative;
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px dashed var(--color-border);
+    display: inline-block; /* To make border-bottom fit content */
+}
+.section-chapter h2::before {
+    content: attr(data-level);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-accent);
+    position: absolute;
+    left: -2.5rem; /* Position the Roman numeral */
+    top: 0;
+    opacity: 0.6;
+    font-size: 1.5rem;
+}
+
+
+.section-chapter h3 {
+    font-size: var(--font-size-lg);
+    color: var(--color-accent); /* Make subsections pop */
+    font-weight: 600;
+}
+
+
+/* Blockquotes */
+blockquote {
+    font-style: italic;
+    font-size: var(--font-size-lg);
+    border-left: 4px solid var(--color-accent);
+    padding-left: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+    color: var(--color-text-secondary);
+    background-color: var(--color-code-bg);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md);
+    position: relative;
+}
+blockquote p {
+    margin-bottom: var(--spacing-sm);
+}
+blockquote footer {
+    font-size: var(--font-size-sm);
+    text-align: right;
+    margin-top: var(--spacing-xs);
+    color: var(--color-text-secondary);
+}
+
+/* Section Dividers */
+.section-divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: var(--spacing-xxl) auto;
+    width: 60%;
+    max-width: 400px;
+}
+
+/* Final Quote */
+.final-quote {
+    text-align: center;
+    font-style: italic;
+    font-size: var(--font-size-lg);
+    max-width: 800px;
+    margin: var(--spacing-xl) auto;
+    color: var(--color-accent);
+}
+
+/* Glossary Styling */
+.glossary {
+    margin-left: 0;
+}
+.glossary dt {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-accent);
+    font-size: var(--font-size-md);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    scroll-margin-top: calc(100px + var(--spacing-md)); /* For direct linking */
+}
+.glossary dd {
+    margin-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-secondary);
+}
+
+
+/* --- Table of Contents (Sidebar) --- */
+.sidebar-toc {
+    grid-column: 1; /* Left sidebar */
+    position: sticky;
+    top: 100px; /* Aligns with header, adjusted for sticky header */
+    height: calc(100vh - 100px - 4rem); /* Height of viewport minus header/footer space */
+    overflow-y: auto; /* Enable scrolling for long TOCs */
+    padding-right: var(--spacing-md); /* Space from content */
+    font-family: var(--font-heading);
+    font-weight: 400;
+    z-index: 50; /* Below header, above main content */
+    border-right: 1px solid var(--color-border);
+    padding-top: var(--spacing-md);
+}
+
+.sidebar-toc h2 {
+    font-size: var(--font-size-lg);
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+    text-align: left;
+}
+
+#toc-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#toc-nav li {
+    margin-bottom: 0.3rem; /* Tighter spacing */
+}
+
+#toc-nav a {
+    display: block;
+    padding: 0.4rem var(--spacing-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+#toc-nav a:hover {
+    background-color: var(--color-border);
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+
+#toc-nav a.active {
+    background-color: color-mix(in srgb, var(--color-accent) 20%, transparent); /* Subtle accent fill */
+    color: var(--color-accent);
+    font-weight: 700;
+    border-left: 3px solid var(--color-accent); /* Visual indicator */
+    padding-left: calc(var(--spacing-sm) - 3px);
+}
+
+/* Indent for sub-levels */
+#toc-nav ul ul {
+    margin-left: var(--spacing-md);
+    border-left: 1px dashed var(--color-border);
+    padding-left: var(--spacing-sm);
+    margin-top: 0.3rem;
+}
+#toc-nav ul ul li a {
+    font-size: calc(var(--font-size-sm) * 0.9);
+}
+
+
+/* Right empty sidebar, primarily for visual balance and future expansion */
+.main-layout > div:last-child:not(.paper-content):not(.sidebar-toc) {
+    grid-column: 3;
+    padding-left: var(--spacing-md);
+    border-left: 1px solid var(--color-border); /* Visual separator */
+}
+
+
+/* --- Footer --- */
+.site-footer {
+    background-color: var(--color-background);
+    color: var(--color-text-secondary);
+    padding: var(--spacing-lg) 0 var(--spacing-md);
+    text-align: center;
+    margin-top: var(--spacing-xxl); /* Push footer down */
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-content {
+    font-size: var(--font-size-sm);
+}
+
+.footer-content p {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* --- Media Queries for Responsiveness --- */
+@media (max-width: 1200px) {
+    .main-layout {
+        grid-template-columns: 1fr var(--max-text-width); /* Hide right sidebar */
+        gap: var(--spacing-lg);
+        padding-top: var(--spacing-lg);
+        padding-bottom: var(--spacing-lg);
+    }
+    .paper-content {
+        grid-column: 2; /* Remain in second column */
+    }
+    .sidebar-toc {
+        padding-right: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 992px) {
+    .main-layout {
+        grid-template-columns: 1fr; /* Single column layout for small screens */
+        padding-top: var(--spacing-md);
+        padding-bottom: var(--spacing-md);
     }
 
-
-    /**
-     * Sets up global event listeners.
-     */
-    function setupEventListeners() {
-        window.addEventListener('scroll', updateReadingProgress);
-        window.addEventListener('scroll', handleHeaderShrink);
-        window.addEventListener('resize', updateReadingProgress); // Adjust progress on resize
+    .sidebar-toc {
+        grid-column: 1; /* Place TOC at the top for small screens */
+        position: static; /* No longer sticky */
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        padding: var(--spacing-md) 0;
+        margin-bottom: var(--spacing-lg);
     }
 
-    /**
-     * Updates the reading progress bar based on scroll position.
-     */
-    function updateReadingProgress() {
-        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrolled = window.scrollY;
-        const progress = (scrolled / totalHeight) * 100;
-        readingProgressBar.style.width = `${progress}%`;
+    .sidebar-toc h2 {
+        text-align: center;
+        margin-bottom: var(--spacing-sm);
     }
 
-    /**
-     * Adds/removes a 'scrolled' class to the header based on scroll position,
-     * triggering CSS animations for header shrinkage.
-     */
-    function handleHeaderShrink() {
-        if (window.scrollY > 50) { // Trigger after 50px scroll
-            siteHeader.classList.add('scrolled');
-        } else {
-            siteHeader.classList.remove('scrolled');
-        }
+    #toc-nav ul {
+        display: flex; /* Make TOC horizontal for smaller screens or wrap */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--spacing-xs);
     }
 
-    /**
-     * Sets up Intersection Observer to highlight active sections in the TOC.
-     */
-    function setupIntersectionObserver() {
-        const headerOffset = siteHeader.offsetHeight + 20; // Account for sticky header height + some buffer
-        observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const id = entry.target.getAttribute('id');
-                const tocLink = tocNav.querySelector(`a[href="#${id}"]`);
-
-                if (tocLink) {
-                    if (entry.isIntersecting && entry.intersectionRatio >= 0.5) { // When at least 50% visible
-                        // Remove active from all others
-                        tocNav.querySelectorAll('a').forEach(link => link.classList.remove('active'));
-                        tocLink.classList.add('active');
-                    } else if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
-                        // This else if is to ensure if a section scrolls out from *above*, its active class is removed.
-                        // However, the main logic for adding active class covers this for most cases.
-                    }
-                }
-            });
-        }, {
-            rootMargin: `-${headerOffset}px 0px 0px 0px`, // Shrink the top margin of the viewport, effectively pushing up the "detection line"
-            threshold: [0, 0.5, 1.0] // Observe at 0%, 50%, and 100% visibility
-        });
-
-        // Observe all main sections for TOC highlighting
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // Fallback for initial load: highlight the top-most visible section
-        // This is important because the observer might not trigger immediately on DOMContentLoaded
-        updateActiveTOCLinkOnLoad();
+    #toc-nav li {
+        margin-bottom: 0;
     }
 
-    /**
-     * Special function to determine active TOC link immediately on load.
-     */
-    function updateActiveTOCLinkOnLoad() {
-        const headerOffset = siteHeader.offsetHeight + 20;
-        let foundActive = false;
-        sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            // Check if section is significantly visible in the viewport from the top, considering header.
-            if (rect.top <= headerOffset && rect.bottom > headerOffset && !foundActive) {
-                const id = section.getAttribute('id');
-                const tocLink = tocNav.querySelector(`a[href="#${id}"]`);
-                if (tocLink) {
-                    tocNav.querySelectorAll('a').forEach(link => link.classList.remove('active'));
-                    tocLink.classList.add('active');
-                    foundActive = true;
-                }
-            }
-        });
-        // If nothing matches (e.g., page is very short), activate the first link
-        if (!foundActive && sections.length > 0) {
-            const firstLink = tocNav.querySelector('a');
-            if (firstLink) firstLink.classList.add('active');
-        }
+    #toc-nav a {
+        padding: 0.3rem var(--spacing-xs);
+        font-size: var(--font-size-sm);
     }
-});
+    #toc-nav a.active {
+        padding-left: calc(0.3rem + 0.3rem); /* Adjust for removal of left border */
+        border-left: none; /* Remove left border on horizontal TOC */
+        border-bottom: 2px solid var(--color-accent); /* Use bottom border instead */
+        border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+    }
+    #toc-nav ul ul { /* Hide sub-level TOC on small screens for brevity */
+        display: none;
+    }
+
+    .paper-content {
+        grid-column: 1; /* Back to single column */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .paper-title {
+        font-size: 2.2rem;
+    }
+    .author-info {
+        font-size: var(--font-size-base);
+    }
+    .section-chapter h2 {
+        font-size: var(--font-size-xl);
+    }
+    .section-chapter h2::before { /* Remove absolute positioning for Roman numeral */
+        position: static;
+        display: inline-block;
+        margin-right: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 1rem;
+    }
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    .paper-title {
+        font-size: 1.8rem;
+    }
+    .header-tagline {
+        font-size: var(--font-size-sm);
+    }
+    .author-info p, .keywords {
+        font-size: var(--font-size-sm);
+    }
+    .section-chapter h2 {
+        font-size: 1.6rem;
+    }
+    .section-chapter h3 {
+        font-size: 1.3rem;
+    }
+    blockquote {
+        font-size: var(--font-size-base);
+        padding: var(--spacing-sm);
+    }
+    .final-quote {
+        font-size: var(--font-size-base);
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header.scrolled {
+        padding: 0.5rem 0;
+    }
+    .paper-title {
+        font-size: 1.5rem;
+    }
+    .author-info p, .keywords {
+        line-height: 1.2;
+    }
+    .section-chapter h2 {
+        font-size: 1.4rem;
+        margin-top: var(--spacing-lg);
+    }
+    .section-chapter h3 {
+        font-size: 1.15rem;
+    }
+    .section-chapter h2::before {
+        display: block; /* New line for Roman numeral */
+        margin-bottom: var(--spacing-xs);
+    }
+    .section-divider {
+        margin: var(--spacing-lg) auto;
+        width: 80%;
+    }
+}
