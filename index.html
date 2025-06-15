@@ -1,0 +1,231 @@
+
+---
+
+### 4. `index.html` (Revised)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NUEVA: Elite Web3 & NFT Development Agency. Crafting the future of digital experiences with blockchain technology.">
+    <meta name="keywords" content="Web3, NFT, Development, Blockchain, Crypto, Metaverse, Decentralized, Digital Art, Tech, Agency, Nueva">
+    <meta name="author" content="Your Name/Alias (NUEVA Team)">
+
+    <title>NUEVA | Web3 & NFT Development</title>
+
+    <!-- Favicon (replace with your own) -->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+    <!-- Custom Fonts: Syncopate (for headlines) & Inter (for body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme"> <!-- Default to light for a cleaner base, JS will force dark -->
+    <!-- Accessibility: Skip to main content link for screen readers -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="container header-grid">
+            <div class="logo">
+                <!-- <img src="assets/nueva-logo.png" alt="NUEVA Logo" class="logo-img"> -->
+                <a href="/" class="logo-text">NUEVA</a>
+            </div>
+            <nav class="main-nav" aria-label="Main navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#hero" class="nav-link current">Home</a></li>
+                    <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+                    <li class="nav-item"><a href="#team" class="nav-link">Team</a></li>
+                    <li class="nav-item cta-button-container">
+                        <a href="#contact" class="btn btn-header-cta">Get In Touch</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section id="hero" class="hero-section">
+            <div class="container hero-content">
+                <div class="hero-eyebrow animate-in">WE ARE NUEVA</div>
+                <h1 class="hero-title animate-in">
+                    WEB3<span>•</span>NFT<br>DEVELOPMENT
+                </h1>
+                <div class="hero-description-group">
+                    <p class="hero-description animate-in">
+                        We help artists, innovators, and companies build out
+                        collections, experiences, and Web3 products.
+                    </p>
+                    <p class="hero-description animate-in delay-200">
+                        We handle all the technical aspects of creating
+                        and developing NFTs.
+                    </p>
+                </div>
+            </div>
+            <div class="hero-overlay-graphics">
+                <div class="grid-line line-horizontal-top"></div>
+                <div class="grid-line line-horizontal-bottom"></div>
+                <div class="grid-line line-vertical-left"></div>
+                <div class="grid-line line-vertical-right"></div>
+                <div class="geometric-shape shape-tl animate-graphic"></div>
+                <div class="geometric-shape shape-br animate-graphic"></div>
+            </div>
+        </section>
+
+        <section id="services" class="section services-section">
+            <div class="container">
+                <h2 class="section-title animate-fade-in">Our Services</h2>
+                <div class="services-grid">
+                    <div class="service-card animate-fade-in delay-100">
+                        <h3><i class="fas fa-cubes"></i> NFT Collection Generation</h3>
+                        <p>Automated artwork generation, metadata creation, and smart contract integration for large-scale NFT collections.</p>
+                    </div>
+                    <div class="service-card animate-fade-in delay-200">
+                        <h3><i class="fas fa-ethernet"></i> Smart Contract Development</h3>
+                        <p>Secure and optimized Solidity smart contracts for various use cases, deployed on your blockchain of choice.</p>
+                    </div>
+                    <div class="service-card animate-fade-in delay-300">
+                        <h3><i class="fas fa-globe"></i> Decentralized Applications (dApps)</h3>
+                        <p>Building intuitive and robust dApps with seamless blockchain integration and superior UX.</p>
+                    </div>
+                    <div class="service-card animate-fade-in delay-400">
+                        <h3><i class="fas fa-wallet"></i> Wallet Integration</h3>
+                        <p>Expert integration with popular crypto wallets (e.g., MetaMask, WalletConnect) for frictionless user interaction.</p>
+                    </div>
+                </div>
+                <a href="#contact" class="btn btn-secondary animate-fade-in delay-500">Discuss Your Project</a>
+            </div>
+        </section>
+
+        <section id="projects" class="section projects-section">
+            <div class="container">
+                <h2 class="section-title animate-fade-in">Our Latest Ventures</h2>
+                <div class="projects-grid">
+                    <div class="project-card animate-fade-in delay-100">
+                        <img src="https://via.placeholder.com/600x400/121212/FF006E?text=Project+1" alt="Project 1: Pixel Beasts" loading="lazy">
+                        <div class="project-info">
+                            <h4>Pixel Beasts</h4>
+                            <p>A 10k PFP collection with interactive staking mechanics.</p>
+                            <a href="#" class="btn-project">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-card animate-fade-in delay-200">
+                        <img src="https://via.placeholder.com/600x400/121212/FF006E?text=Project+2" alt="Project 2: Decentraland Gallery" loading="lazy">
+                        <div class="project-info">
+                            <h4>Decentraland Gallery</h4>
+                            <p>An immersive virtual art gallery built within the metaverse.</p>
+                            <a href="#" class="btn-project">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-card animate-fade-in delay-300">
+                        <img src="https://via.placeholder.com/600x400/121212/FF006E?text=Project+3" alt="Project 3: Tokenized Real Estate" loading="lazy">
+                        <div class="project-info">
+                            <h4>Tokenized Real Estate</h4>
+                            <p>Platform for fractional ownership of real assets via NFTs.</p>
+                            <a href="#" class="btn-project">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="section team-section">
+            <div class="container">
+                <h2 class="section-title animate-fade-in">Meet The Innovators</h2>
+                <div class="team-grid">
+                    <div class="team-member-card animate-fade-in delay-100">
+                        <img src="https://via.placeholder.com/200/2D3748/E2E8F0?text=Jane+D." alt="Jane Doe" class="team-member-avatar">
+                        <h3>Jane Doe</h3>
+                        <p>CEO & Lead Architect</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter-square"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member-card animate-fade-in delay-200">
+                        <img src="https://via.placeholder.com/200/2D3748/E2E8F0?text=John+S." alt="John Smith" class="team-member-avatar">
+                        <h3>John Smith</h3>
+                        <p>CTO & Blockchain Engineer</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="GitHub"><i class="fab fa-github-square"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member-card animate-fade-in delay-300">
+                        <img src="https://via.placeholder.com/200/2D3748/E2E8F0?text=Emily+C." alt="Emily Chen" class="team-member-avatar">
+                        <h3>Emily Chen</h3>
+                        <p>Lead UX/UI Designer</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section contact-section">
+            <div class="container">
+                <h2 class="section-title animate-fade-in">Let's Build the Future Together.</h2>
+                <p class="contact-intro animate-fade-in">Have a Web3 vision? We're ready to make it a reality. Reach out to our team.</p>
+                <form class="contact-form animate-fade-in">
+                    <div class="form-group">
+                        <label for="name" class="visually-hidden">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="visually-hidden">Your Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" class="visually-hidden">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="Subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="visually-hidden">Your Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-form-submit">Send Message <i class="fas fa-paper-plane"></i></button>
+                    <div id="form-status" class="form-status" aria-live="polite"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-logo">NUEVA</div>
+            <p class="footer-tagline">Innovating Web3. Building Tomorrow.</p>
+            <nav class="footer-nav">
+                <ul class="footer-nav-list">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="footer-social-links">
+                <a href="#" aria-label="NUEVA on Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="NUEVA on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" aria-label="NUEVA on Discord"><i class="fab fa-discord"></i></a>
+            </div>
+            <p class="copyright">© <span id="current-year"></span> NUEVA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript File -->
+    <script src="script.js" defer></script>
+</body>
+</html>
