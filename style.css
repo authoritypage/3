@@ -1,576 +1,201 @@
-/*
-    Psychopolitics of Dominance | style.css
-    Designed for maximum readability, intellectual clarity, and effortless navigation
-    of academic long-form content. Prioritizing dark theme for reduced eye strain.
-*/
-
-/* --- CSS Variables for Global Styling & Theme --- */
-:root {
-    /* Color Palette (Dark Theme optimized for text-heavy content) */
-    --color-background: #1A1A1A;     /* Deep charcoal background */
-    --color-text-primary: #EAEAEA;   /* Soft white for main text */
-    --color-text-secondary: #AAAAAA; /* Lighter gray for secondary text, author info */
-    --color-accent: #6DB3BC;         /* Sophisticated blue-green for highlights and links (intellectual/scientific feel) */
-    --color-border: #333333;         /* Subtle separator lines */
-    --color-code-bg: #222222;        /* For inline code or blockquotes background */
-    --color-quote-border: #444444;   /* Quote border color */
-
-    /* Typography */
-    --font-body: 'Merriweather', serif; /* Classic, highly readable serif for long text */
-    --font-heading: 'Lato', sans-serif; /* Clean, modern sans-serif for headings */
-    --font-size-base: 1.15rem; /* Larger base font for comfort */
-    --font-size-sm: 0.95rem;   /* Smaller text (keywords, footer) */
-    --font-size-md: 1.1rem;
-    --font-size-lg: 1.5rem;
-    --font-size-xl: 2rem;      /* H2-level headings */
-    --font-size-xxl: 3rem;     /* Paper Title */
-
-    /* Spacing */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2.5rem;
-    --spacing-xl: 4rem;
-    --spacing-xxl: 6rem; /* Section padding */
-
-    /* Layout Max-Width for Readability */
-    --max-text-width: 750px; /* Optimal reading width (approx 65-85 characters per line) */
-
-    /* Transitions & Animations */
-    --transition-duration: 0.3s;
-    --transition-ease: ease-in-out;
-}
-
-/* --- Base Styles & Resets --- */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: var(--font-body);
-    font-size: var(--font-size-base);
-    line-height: 1.7; /* Increased for better readability of long text */
-    color: var(--color-text-primary);
-    background-color: var(--color-background);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    -webkit-font-smoothing: antialiased; /* macOS font smoothing */
-    -moz-osx-font-smoothing: grayscale; /* macOS font smoothing */
-}
-
-a {
-    color: var(--color-accent);
-    text-decoration: none;
-    transition: color var(--transition-duration), background-color var(--transition-duration);
-}
-
-a:hover,
-a:focus {
-    text-decoration: underline;
-    color: var(--color-text-primary); /* Less intense accent on hover for reading */
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    color: var(--color-text-primary);
-    line-height: 1.3;
-    margin-top: var(--spacing-lg);
-    margin-bottom: var(--spacing-sm);
-    font-weight: 700;
-}
-
-p {
-    margin-bottom: var(--spacing-md);
-    color: var(--color-text-primary);
-}
-
-strong {
-    font-weight: 700;
-    color: var(--color-accent); /* Highlight important terms */
-}
-
-ul, ol {
-    margin-left: var(--spacing-lg);
-    margin-bottom: var(--spacing-md);
-    color: var(--color-text-primary);
-}
-
-li {
-    margin-bottom: var(--spacing-xs);
-}
-
-/* --- Utility Classes --- */
-.container {
-    max-width: 1400px; /* Overall max width, text inside has its own */
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
-}
-
-.visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
-
-.skip-link {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    background-color: var(--color-accent);
-    color: white;
-    padding: var(--spacing-sm);
-    z-index: 1000;
-    font-size: var(--font-size-sm);
-}
-
-.skip-link:focus {
-    left: 0;
-}
-
-/* --- Header --- */
-.site-header {
-    background-color: var(--color-background); /* Matches body background */
-    padding: var(--spacing-lg) 0 var(--spacing-sm);
-    border-bottom: 1px solid var(--color-border);
-    position: sticky;
-    top: 0;
-    z-index: 99;
-    transition: padding var(--transition-duration), background-color var(--transition-duration), box-shadow var(--transition-duration);
-}
-
-.site-header.scrolled {
-    padding: var(--spacing-sm) 0;
-    background-color: color-mix(in srgb, var(--color-background) 90%, black); /* Slightly darker on scroll */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-.header-content {
-    text-align: center;
-    max-width: var(--max-text-width); /* Center the header text content */
-}
-
-.header-tagline {
-    font-family: var(--font-heading);
-    font-size: var(--font-size-md);
-    color: var(--color-accent);
-    margin-bottom: var(--spacing-xs);
-}
-
-.paper-title {
-    font-size: var(--font-size-xxl);
-    color: var(--color-text-primary);
-    margin-bottom: var(--spacing-md);
-    line-height: 1.1;
-    font-weight: 700;
-}
-
-.author-info {
-    font-size: var(--font-size-md);
-    color: var(--color-text-secondary);
-}
-
-.author-info p {
-    margin-bottom: var(--spacing-xs);
-    line-height: 1.4;
-}
-
-.keywords {
-    font-size: var(--font-size-sm);
-    margin-top: var(--spacing-sm);
-    line-height: 1.5;
-    color: var(--color-accent);
-    font-weight: 400;
-}
-.keywords strong {
-    color: var(--color-text-secondary);
-}
-
-
-/* Reading Progress Bar */
-.reading-progress-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0%; /* Filled by JS */
-    height: 4px;
-    background-color: var(--color-accent);
-    z-index: 100; /* Above header itself */
-    transition: width 0.1s linear;
-}
-
-
-/* --- Main Content Layout (Grid) --- */
-.main-layout {
-    display: grid;
-    grid-template-columns: 1fr var(--max-text-width) 1fr; /* Flexible sidebars, fixed content width */
-    gap: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
-}
-
-.paper-content {
-    grid-column: 2; /* Main content in the middle column */
-    max-width: var(--max-text-width); /* Explicitly set content width */
-    font-size: var(--font-size-base);
-    line-height: 1.7;
-    margin: 0 auto; /* Ensures centering if grid fails or on very wide screens */
-}
-
-.section-chapter {
-    margin-bottom: var(--spacing-xxl); /* Spacing between main sections */
-}
-
-.section-chapter:last-child {
-    margin-bottom: 0;
-}
-
-.section-chapter h2,
-.section-chapter h3 {
-    margin-top: var(--spacing-xl);
-    margin-bottom: var(--spacing-md);
-    scroll-margin-top: calc(100px + var(--spacing-md)); /* Adjust for sticky header when linking */
-}
-
-.section-chapter h2 {
-    font-size: var(--font-size-xl);
-    position: relative;
-    padding-bottom: var(--spacing-xs);
-    border-bottom: 1px dashed var(--color-border);
-    display: inline-block; /* To make border-bottom fit content */
-}
-.section-chapter h2::before {
-    content: attr(data-level);
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--color-accent);
-    position: absolute;
-    left: -2.5rem; /* Position the Roman numeral */
-    top: 0;
-    opacity: 0.6;
-    font-size: 1.5rem;
-}
-
-
-.section-chapter h3 {
-    font-size: var(--font-size-lg);
-    color: var(--color-accent); /* Make subsections pop */
-    font-weight: 600;
-}
-
-
-/* Blockquotes */
-blockquote {
-    font-style: italic;
-    font-size: var(--font-size-lg);
-    border-left: 4px solid var(--color-accent);
-    padding-left: var(--spacing-md);
-    margin: var(--spacing-lg) 0;
-    color: var(--color-text-secondary);
-    background-color: var(--color-code-bg);
-    border-radius: var(--border-radius-sm);
-    padding: var(--spacing-md);
-    position: relative;
-}
-blockquote p {
-    margin-bottom: var(--spacing-sm);
-}
-blockquote footer {
-    font-size: var(--font-size-sm);
-    text-align: right;
-    margin-top: var(--spacing-xs);
-    color: var(--color-text-secondary);
-}
-
-/* Section Dividers */
-.section-divider {
-    border: none;
-    border-top: 1px solid var(--color-border);
-    margin: var(--spacing-xxl) auto;
-    width: 60%;
-    max-width: 400px;
-}
-
-/* Final Quote */
-.final-quote {
-    text-align: center;
-    font-style: italic;
-    font-size: var(--font-size-lg);
-    max-width: 800px;
-    margin: var(--spacing-xl) auto;
-    color: var(--color-accent);
-}
-
-/* Glossary Styling */
-.glossary {
-    margin-left: 0;
-}
-.glossary dt {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--color-accent);
-    font-size: var(--font-size-md);
-    margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-xs);
-    scroll-margin-top: calc(100px + var(--spacing-md)); /* For direct linking */
-}
-.glossary dd {
-    margin-left: var(--spacing-lg);
-    margin-bottom: var(--spacing-sm);
-    color: var(--color-text-secondary);
-}
-
-
-/* --- Table of Contents (Sidebar) --- */
-.sidebar-toc {
-    grid-column: 1; /* Left sidebar */
-    position: sticky;
-    top: 100px; /* Aligns with header, adjusted for sticky header */
-    height: calc(100vh - 100px - 4rem); /* Height of viewport minus header/footer space */
-    overflow-y: auto; /* Enable scrolling for long TOCs */
-    padding-right: var(--spacing-md); /* Space from content */
-    font-family: var(--font-heading);
-    font-weight: 400;
-    z-index: 50; /* Below header, above main content */
-    border-right: 1px solid var(--color-border);
-    padding-top: var(--spacing-md);
-}
-
-.sidebar-toc h2 {
-    font-size: var(--font-size-lg);
-    margin-top: 0;
-    margin-bottom: var(--spacing-md);
-    color: var(--color-text-primary);
-    text-align: left;
-}
-
-#toc-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#toc-nav li {
-    margin-bottom: 0.3rem; /* Tighter spacing */
-}
-
-#toc-nav a {
-    display: block;
-    padding: 0.4rem var(--spacing-sm);
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-    border-radius: var(--border-radius-sm);
-    transition: background-color var(--transition-fast), color var(--transition-fast);
-}
-
-#toc-nav a:hover {
-    background-color: var(--color-border);
-    color: var(--color-text-primary);
-    text-decoration: none;
-}
-
-#toc-nav a.active {
-    background-color: color-mix(in srgb, var(--color-accent) 20%, transparent); /* Subtle accent fill */
-    color: var(--color-accent);
-    font-weight: 700;
-    border-left: 3px solid var(--color-accent); /* Visual indicator */
-    padding-left: calc(var(--spacing-sm) - 3px);
-}
-
-/* Indent for sub-levels */
-#toc-nav ul ul {
-    margin-left: var(--spacing-md);
-    border-left: 1px dashed var(--color-border);
-    padding-left: var(--spacing-sm);
-    margin-top: 0.3rem;
-}
-#toc-nav ul ul li a {
-    font-size: calc(var(--font-size-sm) * 0.9);
-}
-
-
-/* Right empty sidebar, primarily for visual balance and future expansion */
-.main-layout > div:last-child:not(.paper-content):not(.sidebar-toc) {
-    grid-column: 3;
-    padding-left: var(--spacing-md);
-    border-left: 1px solid var(--color-border); /* Visual separator */
-}
-
-
-/* --- Footer --- */
-.site-footer {
-    background-color: var(--color-background);
-    color: var(--color-text-secondary);
-    padding: var(--spacing-lg) 0 var(--spacing-md);
-    text-align: center;
-    margin-top: var(--spacing-xxl); /* Push footer down */
-    border-top: 1px solid var(--color-border);
-}
-
-.footer-content {
-    font-size: var(--font-size-sm);
-}
-
-.footer-content p {
-    margin-bottom: var(--spacing-xs);
-}
-
-/* --- Media Queries for Responsiveness --- */
-@media (max-width: 1200px) {
-    .main-layout {
-        grid-template-columns: 1fr var(--max-text-width); /* Hide right sidebar */
-        gap: var(--spacing-lg);
-        padding-top: var(--spacing-lg);
-        padding-bottom: var(--spacing-lg);
-    }
-    .paper-content {
-        grid-column: 2; /* Remain in second column */
-    }
-    .sidebar-toc {
-        padding-right: var(--spacing-sm);
-    }
-}
-
-@media (max-width: 992px) {
-    .main-layout {
-        grid-template-columns: 1fr; /* Single column layout for small screens */
-        padding-top: var(--spacing-md);
-        padding-bottom: var(--spacing-md);
-    }
-
-    .sidebar-toc {
-        grid-column: 1; /* Place TOC at the top for small screens */
-        position: static; /* No longer sticky */
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--color-border);
-        padding: var(--spacing-md) 0;
-        margin-bottom: var(--spacing-lg);
-    }
-
-    .sidebar-toc h2 {
-        text-align: center;
-        margin-bottom: var(--spacing-sm);
-    }
-
-    #toc-nav ul {
-        display: flex; /* Make TOC horizontal for smaller screens or wrap */
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: var(--spacing-xs);
-    }
-
-    #toc-nav li {
-        margin-bottom: 0;
-    }
-
-    #toc-nav a {
-        padding: 0.3rem var(--spacing-xs);
-        font-size: var(--font-size-sm);
-    }
-    #toc-nav a.active {
-        padding-left: calc(0.3rem + 0.3rem); /* Adjust for removal of left border */
-        border-left: none; /* Remove left border on horizontal TOC */
-        border-bottom: 2px solid var(--color-accent); /* Use bottom border instead */
-        border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
-    }
-    #toc-nav ul ul { /* Hide sub-level TOC on small screens for brevity */
-        display: none;
-    }
-
-    .paper-content {
-        grid-column: 1; /* Back to single column */
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .paper-title {
-        font-size: 2.2rem;
-    }
-    .author-info {
-        font-size: var(--font-size-base);
-    }
-    .section-chapter h2 {
-        font-size: var(--font-size-xl);
-    }
-    .section-chapter h2::before { /* Remove absolute positioning for Roman numeral */
-        position: static;
-        display: inline-block;
-        margin-right: var(--spacing-xs);
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        font-size: 1rem;
-    }
-    .container {
-        padding: 0 var(--spacing-sm);
-    }
-    .paper-title {
-        font-size: 1.8rem;
-    }
-    .header-tagline {
-        font-size: var(--font-size-sm);
-    }
-    .author-info p, .keywords {
-        font-size: var(--font-size-sm);
-    }
-    .section-chapter h2 {
-        font-size: 1.6rem;
-    }
-    .section-chapter h3 {
-        font-size: 1.3rem;
-    }
-    blockquote {
-        font-size: var(--font-size-base);
-        padding: var(--spacing-sm);
-    }
-    .final-quote {
-        font-size: var(--font-size-base);
-    }
-}
-
-@media (max-width: 480px) {
-    .site-header.scrolled {
-        padding: 0.5rem 0;
-    }
-    .paper-title {
-        font-size: 1.5rem;
-    }
-    .author-info p, .keywords {
-        line-height: 1.2;
-    }
-    .section-chapter h2 {
-        font-size: 1.4rem;
-        margin-top: var(--spacing-lg);
-    }
-    .section-chapter h3 {
-        font-size: 1.15rem;
-    }
-    .section-chapter h2::before {
-        display: block; /* New line for Roman numeral */
-        margin-bottom: var(--spacing-xs);
-    }
-    .section-divider {
-        margin: var(--spacing-lg) auto;
-        width: 80%;
-    }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New WordPress Site Look (Dark Matte News Style)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212; /* Very dark charcoal/near black background */
+            color: #d1d5db; /* Light gray text for body */
+        }
+        /* Custom class for vertical writing mode, as Tailwind doesn't have a direct utility */
+        .vertical-rl {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header Section (Simulating wp:template-part {"slug":"header"}) -->
+    <header class="bg-[#1a1a1a] shadow-md py-4 px-6 md:px-8 lg:px-12 rounded-b-lg">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <!-- Site Title - Emulating vertical-rl for larger screens -->
+            <div class="relative flex-shrink-0 md:pr-8">
+                <h1 class="text-3xl lg:text-4xl font-extrabold text-[#00ADB5] mb-4 md:mb-0 md:absolute md:top-1/2 md:-translate-y-1/2 md:left-0 md:transform md:vertical-rl md:origin-top-left md:whitespace-nowrap">
+                    NEWS HUB
+                </h1>
+            </div>
+
+            <!-- Navigation - Colors removed -->
+            <nav class="flex-grow flex justify-center md:justify-end">
+                <ul class="flex flex-wrap gap-x-6 gap-y-2 text-lg font-medium">
+                    <li><a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200 py-1 px-3 rounded-md hover:bg-gray-700">Home</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200 py-1 px-3 rounded-md hover:bg-gray-700">Politics</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200 py-1 px-3 rounded-md hover:bg-gray-700">Technology</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200 py-1 px-3 rounded-md hover:bg-gray-700">Sports</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200 py-1 px-3 rounded-md hover:bg-gray-700">World</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-6 py-12 flex-grow">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Simulating wp:post-template loop - News Article Style -->
+            <!-- Post 1 (Main/Featured Article - if desired, could be full width) -->
+            <article class="bg-[#1a1a1a] border border-gray-800 rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                <a href="#" class="block">
+                    <img src="https://placehold.co/600x300/3A5E40/CFE8D0?text=Top+Story+Image" alt="Featured image for post 1" class="w-full h-48 object-cover">
+                </a>
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold text-gray-50 mb-3 leading-tight">
+                        <a href="#" class="hover:text-gray-200 transition-colors duration-200">Breaking: New AI Breakthrough Promises Revolutionary Changes</a>
+                    </h2>
+                    <p class="text-gray-300 text-base mb-4 line-clamp-4">
+                        Researchers unveil a groundbreaking artificial intelligence model capable of unprecedented learning and adaptation, sparking both excitement and ethical debates across the globe. Experts weigh in on the implications for various industries.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-400">
+                        <time datetime="2025-06-23">June 23, 2025</time>
+                        <span class="mx-2">&bull;</span>
+                        <span>By John Doe</span>
+                        <span class="mx-2">&bull;</span>
+                        <span class="text-[#00ADB5]">#Technology</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 2 -->
+            <article class="bg-[#1a1a1a] border border-gray-800 rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                <a href="#" class="block">
+                    <img src="https://placehold.co/600x300/4C5E87/D0DCEF?text=World+News" alt="Featured image for post 2" class="w-full h-40 object-cover">
+                </a>
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-50 mb-2 leading-tight">
+                        <a href="#" class="hover:text-gray-200 transition-colors duration-200">Global Leaders Discuss Climate Action at Urgent Summit</a>
+                    </h2>
+                    <p class="text-gray-300 text-sm mb-3 line-clamp-3">
+                        Delegates from over 100 nations convened today to address pressing environmental concerns, with focus on new emissions targets and international cooperation strategies.
+                    </p>
+                    <div class="flex items-center text-xs text-gray-400">
+                        <time datetime="2025-06-22">June 22, 2025</time>
+                        <span class="mx-1">&bull;</span>
+                        <span>By Jane Smith</span>
+                        <span class="mx-1">&bull;</span>
+                        <span class="text-[#00ADB5]">#Environment</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 3 -->
+            <article class="bg-[#1a1a1a] border border-gray-800 rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                <a href="#" class="block">
+                    <img src="https://placehold.co/600x300/874C4C/F2DEDE?text=Politics+Update" alt="Featured image for post 3" class="w-full h-40 object-cover">
+                </a>
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-50 mb-2 leading-tight">
+                        <a href="#" class="hover:text-gray-200 transition-colors duration-200">Local Elections See Record Voter Turnout Amidst Key Issues</a>
+                    </h2>
+                    <p class="text-gray-300 text-sm mb-3 line-clamp-3">
+                        Citizens cast their votes in numbers not seen in decades, indicating high engagement with ongoing debates on urban development and public services.
+                    </p>
+                    <div class="flex items-center text-xs text-gray-400">
+                        <time datetime="2025-06-21">June 21, 2025</time>
+                        <span class="mx-1">&bull;</span>
+                        <span>By Alex Lee</span>
+                        <span class="mx-1">&bull;</span>
+                        <span class="text-[#00ADB5]">#Politics</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 4 (Example of article without a visible image for more text focus) -->
+            <article class="bg-[#1a1a1a] border border-gray-800 rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-50 mb-2 leading-tight">
+                        <a href="#" class="hover:text-gray-200 transition-colors duration-200">Expert Analysis: The Economic Impact of Renewable Energy</a>
+                    </h2>
+                    <p class="text-gray-300 text-sm mb-3 line-clamp-4">
+                        A new report highlights the growing economic benefits and job creation potential of the renewable energy sector, urging further investment and policy support.
+                    </p>
+                    <div class="flex items-center text-xs text-gray-400">
+                        <time datetime="2025-06-20">June 20, 2025</time>
+                        <span class="mx-1">&bull;</span>
+                        <span>By Chris Green</span>
+                        <span class="mx-1">&bull;</span>
+                        <span class="text-[#00ADB5]">#Economy</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 5 -->
+            <article class="bg-[#1a1a1a] border border-gray-800 rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                <a href="#" class="block">
+                    <img src="https://placehold.co/600x300/403A5E/CFE8D0?text=Sports+News" alt="Featured image for post 5" class="w-full h-40 object-cover">
+                </a>
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-50 mb-2 leading-tight">
+                        <a href="#" class="hover:text-gray-200 transition-colors duration-200">Local Team Secures Championship Title in Thrilling Match</a>
+                    </h2>
+                    <p class="text-gray-300 text-sm mb-3 line-clamp-3">
+                        The Falcons clinched the national championship in a nail-biting finish, marking a historic victory for the city and its dedicated fans.
+                    </p>
+                    <div class="flex items-center text-xs text-gray-400">
+                        <time datetime="2025-06-19">June 19, 2025</time>
+                        <span class="mx-1">&bull;</span>
+                        <span>By Dana White</span>
+                        <span class="mx-1">&bull;</span>
+                        <span class="text-[#00ADB5]">#Sports</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- Query No Results Simulation -->
+        <div class="hidden"> <!-- Hide this section by default, show if no results -->
+            <div class="bg-yellow-900 border-l-4 border-yellow-700 text-yellow-200 p-4 rounded-md mt-12" role="alert">
+                <p class="font-bold">No Results Found</p>
+                <p>Sorry, but nothing was found. Please try a search with different keywords.</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-12 mb-8 border-t border-gray-700 pt-6">
+            <a href="#" class="flex items-center gap-2 text-gray-400 hover:text-gray-100 font-medium transition-colors duration-200 group">
+                <svg class="w-5 h-5 transform -rotate-180 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                Previous
+            </a>
+            <div class="flex gap-2">
+                <a href="#" class="px-3 py-1 rounded-md bg-gray-600 text-gray-100 font-medium">1</a>
+                <a href="#" class="px-3 py-1 rounded-md bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-gray-100 transition-colors duration-200">2</a>
+                <a href="#" class="px-3 py-1 rounded-md bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-gray-100 transition-colors duration-200">3</a>
+                <span>...</span>
+                <a href="#" class="px-3 py-1 rounded-md bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-gray-100 transition-colors duration-200">10</a>
+            </div>
+            <a href="#" class="flex items-center gap-2 text-gray-400 hover:text-gray-100 font-medium transition-colors duration-200 group">
+                Next
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer Section (Simulating wp:template-part {"slug":"footer"}) -->
+    <footer class="bg-black text-gray-500 py-6 mt-12 rounded-t-lg">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2025 NEWS HUB. All rights reserved.</p>
+            <p class="mt-2">
+                <a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200">Privacy Policy</a> |
+                <a href="#" class="text-gray-300 hover:text-gray-100 transition-colors duration-200">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
